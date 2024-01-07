@@ -1,6 +1,7 @@
 #!/bin/bash
 
 chsh -s `which zsh`
+cp -R "${ZSH_PATH}"/. ~/
 
 # Set up yay
 echo "===== Setting up yay ====="

@@ -10,7 +10,7 @@ readonly PACMAN_PATH=$CWD/configuration_files/PACMAN
 # Update pacman
 echo "====== Updating Pacman ======"
 echo "Replace existing pacman.conf?"
-echo -ne "[y\n]: "
+echo -ne "[y/n]: "
 read _replace_pacman
 
 if [[ $_replace_pacman = "y" ]]; then
@@ -61,7 +61,7 @@ fi
 
 # Fwupd
 echo "====== Installing fwupd and checking for additional firmware updates ======"
-sudo pacman -S fwupd udisks intel-ucode
+sudo pacman -S fwupd udisks2 intel-ucode
 sudo fwupdmgr refresh
 sudo fwupdmgr get-updates
 sudo fwupdmgr update
@@ -117,7 +117,14 @@ sudo pacman -S zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 sudo chsh -s `which zsh`
-cp "{$ZSH_PATH}/*" ~/
+cp -R "${ZSH_PATH}"/. ~/
+
+# Disabling the annoying PC Speaker beep
+sudo touch /etc/modprobe.d/nobeep.conf
+sudo tee /etc/modprobe.d/nobeep.conf << EOF > /dev/null
+blacklist pcspkr
+blacklist snd_pcsp
+EOF
 
 # Display
 echo "Do you want to install a display manager?"
